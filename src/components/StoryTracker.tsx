@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Decision } from '@/lib/gameState';
-import { getChaosLabel, getChaosEmoji } from '@/lib/gameState';
+import { getChaosLabel } from '@/lib/gameState';
 
 interface StoryTrackerProps {
   decisions: Decision[];
@@ -12,77 +12,86 @@ interface StoryTrackerProps {
 }
 
 export default function StoryTracker({ decisions, totalChaos, isOpen, onClose }: StoryTrackerProps) {
+  // Get subtle indicator color based on chaos
+  const getChaosIndicator = (level: number) => {
+    if (level <= -1) return 'bg-[#4a6a5a]';
+    if (level === 0) return 'bg-[#5a5a4a]';
+    if (level === 1) return 'bg-[#6a5a4a]';
+    return 'bg-[#6a4a4a]';
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black/50 z-40"
+            className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             onClick={onClose}
           />
           
           {/* Panel */}
           <motion.div
-            className="fixed right-0 top-0 h-full w-80 bg-gray-900/95 backdrop-blur-lg border-l border-white/10 z-50 overflow-y-auto"
+            className="fixed right-0 top-0 h-full w-[340px] bg-[#0f0f0f]/98 backdrop-blur-xl 
+              border-l border-[#ffffff08] z-50 overflow-y-auto"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
           >
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-white">📜 Story So Far</h2>
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="font-heading text-lg text-[#e8e6e3] tracking-tight">Story History</h2>
                 <button
                   onClick={onClose}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#4a4845] hover:text-[#8a8a8a] transition-colors text-xl"
                 >
-                  ✕
+                  ×
                 </button>
               </div>
               
-              {/* Chaos Meter */}
-              <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-purple-900/50 to-pink-900/50 border border-purple-500/30">
-                <div className="text-center">
-                  <p className="text-sm text-gray-400 mb-1">Chaos Level</p>
-                  <p className="text-3xl mb-1">{getChaosEmoji(totalChaos)}</p>
-                  <p className="text-lg font-bold text-white">{getChaosLabel(totalChaos)}</p>
-                  <div className="mt-2 w-full bg-gray-700 rounded-full h-2">
-                    <motion.div
-                      className="bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 h-2 rounded-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${Math.min(100, Math.max(0, (totalChaos + 5) * 10))}%` }}
-                      transition={{ duration: 0.5 }}
-                    />
-                  </div>
+              {/* Chaos Summary */}
+              <div className="mb-8 p-5 rounded-xl bg-[#ffffff02] border border-[#ffffff08]">
+                <p className="text-xs text-[#6a6865] tracking-wide uppercase mb-3">Overall Chaos</p>
+                <p className="font-heading text-[#c4c2bf] text-lg">{getChaosLabel(totalChaos)}</p>
+                <div className="mt-3 w-full bg-[#1a1a1a] rounded-full h-1.5 overflow-hidden">
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{
+                      background: 'linear-gradient(90deg, #4a6a5a 0%, #6a6a4a 50%, #6a4a4a 100%)'
+                    }}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${Math.min(100, Math.max(5, (totalChaos + 5) * 10))}%` }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                  />
                 </div>
               </div>
               
               {/* Decision Timeline */}
               <div className="space-y-3">
                 {decisions.length === 0 ? (
-                  <p className="text-gray-400 text-center italic">
-                    No decisions yet. Your story awaits!
+                  <p className="text-[#5a5855] text-center italic text-sm py-8">
+                    Your story awaits...
                   </p>
                 ) : (
                   decisions.map((decision, index) => (
                     <motion.div
                       key={`${decision.sceneId}-${decision.timestamp}`}
-                      className="p-3 rounded-lg bg-white/5 border border-white/10"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
+                      className="p-4 rounded-xl bg-[#ffffff02] border border-[#ffffff06]
+                        hover:border-[#ffffff10] transition-colors"
+                      initial={{ opacity: 0, x: 10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.03, duration: 0.4 }}
                     >
-                      <div className="flex items-start gap-2">
-                        <span className="text-lg">
-                          {decision.chaosLevel <= -1 ? '✅' : decision.chaosLevel === 0 ? '➡️' : decision.chaosLevel === 1 ? '⚠️' : '🔥'}
-                        </span>
-                        <div>
-                          <p className="text-sm text-white">{decision.choiceText}</p>
-                          <p className="text-xs text-gray-400 mt-1">{decision.consequence}</p>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-1.5 h-1.5 rounded-full ${getChaosIndicator(decision.chaosLevel)} mt-2`} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-[#d4d2cf] leading-relaxed">{decision.choiceText}</p>
+                          <p className="text-xs text-[#5a5855] mt-2">{decision.consequence}</p>
                         </div>
                       </div>
                     </motion.div>
@@ -91,8 +100,8 @@ export default function StoryTracker({ decisions, totalChaos, isOpen, onClose }:
               </div>
               
               {decisions.length > 0 && (
-                <div className="mt-6 pt-6 border-t border-white/10 text-center">
-                  <p className="text-sm text-gray-400">
+                <div className="mt-8 pt-6 border-t border-[#ffffff08] text-center">
+                  <p className="text-xs text-[#4a4845] tracking-wide">
                     {decisions.length} decision{decisions.length !== 1 ? 's' : ''} made
                   </p>
                 </div>

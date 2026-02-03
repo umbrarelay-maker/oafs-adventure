@@ -51,7 +51,7 @@ export default function Game() {
       timestamp: Date.now(),
     };
 
-    // Small delay for transition effect
+    // Smooth transition
     setTimeout(() => {
       setGameState(prev => ({
         ...prev,
@@ -61,7 +61,7 @@ export default function Game() {
         isComplete: getScene(choice.nextScene)?.ending !== undefined,
       }));
       setIsTransitioning(false);
-    }, 500);
+    }, 600);
   }, [gameState.currentSceneId]);
 
   const handleRestart = useCallback(() => {
@@ -72,13 +72,13 @@ export default function Game() {
 
   if (!mounted || !currentScene) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
         <motion.div
-          className="text-4xl"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+          className="text-[#4a4a4a] font-heading text-xl tracking-widest"
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          🍕
+          Loading...
         </motion.div>
       </div>
     );
@@ -105,76 +105,81 @@ export default function Game() {
       
       {/* Main game container */}
       <div className="relative min-h-screen">
-        {/* Header */}
-        <header className="fixed top-0 left-0 right-0 z-30 p-4 bg-gradient-to-b from-black/50 to-transparent">
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
+        {/* Header - minimal and elegant */}
+        <header className="fixed top-0 left-0 right-0 z-30 px-6 py-5">
+          <div className="max-w-2xl mx-auto flex items-center justify-between">
             <motion.h1 
-              className="text-xl font-bold text-white"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="font-heading text-[#7a7875] text-sm tracking-[0.2em] uppercase"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
             >
-              🍕 The Oafs&apos; Adventure
+              The Oafs&apos; Adventure
             </motion.h1>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <motion.button
-                className="px-3 py-2 rounded-lg bg-white/10 text-white text-sm hover:bg-white/20 transition-colors"
+                className="px-4 py-2 rounded-lg text-[#6a6865] text-xs tracking-wide
+                  hover:text-[#9a9895] hover:bg-[#ffffff05] transition-all duration-300"
                 onClick={() => setShowTracker(true)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
               >
-                📜 Story ({gameState.decisions.length})
+                History · {gameState.decisions.length}
               </motion.button>
               <motion.button
-                className="px-3 py-2 rounded-lg bg-white/10 text-white text-sm hover:bg-white/20 transition-colors"
+                className="px-4 py-2 rounded-lg text-[#6a6865] text-xs tracking-wide
+                  hover:text-[#9a9895] hover:bg-[#ffffff05] transition-all duration-300"
                 onClick={handleRestart}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
               >
-                🔄 Restart
+                Restart
               </motion.button>
             </div>
           </div>
         </header>
 
         {/* Scene content */}
-        <main className="pt-20 pb-8 px-4">
-          <div className="max-w-2xl mx-auto">
+        <main className="pt-24 pb-12 px-6">
+          <div className="max-w-xl mx-auto">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentScene.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 {/* Scene Title */}
                 <motion.div
-                  className="mb-6 text-center"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1 }}
+                  className="mb-10 text-center"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.6 }}
                 >
-                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                  <h2 className="font-heading text-2xl md:text-3xl text-[#e8e6e3] mb-4 tracking-tight">
                     {currentScene.title}
                   </h2>
-                  <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full" />
+                  <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#3a3a3a] to-transparent mx-auto" />
                 </motion.div>
 
                 {/* Narration */}
                 <motion.div
-                  className="mb-6 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm"
+                  className="mb-10"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
                 >
-                  <p className="text-gray-300 italic leading-relaxed">
+                  <p className="text-[#a09d99] leading-[1.9] text-center italic">
                     {currentScene.narration}
                   </p>
                 </motion.div>
 
                 {/* Dialogue */}
                 {currentScene.dialogue && (
-                  <div className="mb-8">
+                  <div className="mb-12">
                     {currentScene.dialogue.map((line, index) => (
                       <DialogueBubble
                         key={`${currentScene.id}-${index}`}
@@ -193,10 +198,10 @@ export default function Game() {
                     className="space-y-3"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
                   >
-                    <p className="text-sm text-gray-400 text-center mb-4">
-                      What do Josiah and Graham do?
+                    <p className="text-[0.8125rem] text-[#5a5855] text-center mb-6 tracking-wide">
+                      What do they do?
                     </p>
                     {currentScene.choices.map((choice, index) => (
                       <ChoiceButton
@@ -214,24 +219,16 @@ export default function Game() {
           </div>
         </main>
 
-        {/* Transition overlay */}
+        {/* Transition overlay - elegant fade */}
         <AnimatePresence>
           {isTransitioning && (
             <motion.div
-              className="fixed inset-0 bg-black z-40 flex items-center justify-center"
+              className="fixed inset-0 bg-[#0f0f0f] z-40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.span
-                className="text-6xl"
-                animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-                transition={{ duration: 0.5 }}
-              >
-                🍕
-              </motion.span>
-            </motion.div>
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
+            />
           )}
         </AnimatePresence>
       </div>

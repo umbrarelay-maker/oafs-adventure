@@ -9,39 +9,64 @@ interface CharacterPortraitProps {
   speaking?: boolean;
 }
 
-export default function CharacterPortrait({ character, speakerName, mood = 'normal', speaking = false }: CharacterPortraitProps) {
-  // Fun emoji-based character portraits
-  const getCharacterEmoji = () => {
+export default function CharacterPortrait({ character, speakerName, speaking = false }: CharacterPortraitProps) {
+  // Elegant initial-based portraits
+  const getInitial = () => {
     switch (character) {
       case 'josiah':
-        return '🧔';
+        return 'J';
       case 'graham':
-        return '👨‍🦰';
+        return 'G';
       case 'both':
-        return '👬';
+        return 'J&G';
       case 'narrator':
-        return '📖';
+        return '✦';
       case 'other':
-        return '👤';
+        return speakerName?.[0]?.toUpperCase() || '?';
       default:
-        return '❓';
+        return '?';
     }
   };
 
-  const getCharacterColor = () => {
+  // Sophisticated muted colors
+  const getCharacterStyle = () => {
     switch (character) {
       case 'josiah':
-        return 'from-blue-500 to-blue-700';
+        return {
+          bg: 'bg-[#1a1f2e]',
+          border: 'border-[#2a3548]',
+          text: 'text-[#8a9dc4]',
+        };
       case 'graham':
-        return 'from-orange-500 to-orange-700';
+        return {
+          bg: 'bg-[#231a1f]',
+          border: 'border-[#3d2a33]',
+          text: 'text-[#c49a8a]',
+        };
       case 'both':
-        return 'from-purple-500 to-purple-700';
+        return {
+          bg: 'bg-[#1f1a24]',
+          border: 'border-[#352a3d]',
+          text: 'text-[#a88aac]',
+        };
       case 'narrator':
-        return 'from-gray-500 to-gray-700';
+        return {
+          bg: 'bg-transparent',
+          border: 'border-[#2a2a2a]',
+          text: 'text-[#6a6a6a]',
+        };
       case 'other':
-        return 'from-green-500 to-green-700';
+        return {
+          bg: 'bg-[#1a1f1d]',
+          border: 'border-[#2a3530]',
+          text: 'text-[#8ac4a8]',
+        };
       default:
-        return 'from-gray-400 to-gray-600';
+        return {
+          bg: 'bg-[#1a1a1a]',
+          border: 'border-[#2a2a2a]',
+          text: 'text-[#8a8a8a]',
+        };
     }
   };
 
@@ -61,22 +86,28 @@ export default function CharacterPortrait({ character, speakerName, mood = 'norm
     }
   };
 
+  const style = getCharacterStyle();
+
   return (
     <motion.div
       className="flex items-center gap-3"
-      initial={{ opacity: 0, x: -20 }}
+      initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <motion.div
-        className={`w-12 h-12 rounded-full bg-gradient-to-br ${getCharacterColor()} flex items-center justify-center text-2xl shadow-lg`}
-        animate={speaking ? { scale: [1, 1.1, 1] } : {}}
-        transition={{ duration: 0.5, repeat: speaking ? Infinity : 0 }}
+        className={`w-10 h-10 rounded-full ${style.bg} border ${style.border} 
+          flex items-center justify-center font-heading ${style.text}
+          text-sm tracking-wide`}
+        animate={speaking ? { 
+          borderColor: ['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.15)', 'rgba(255,255,255,0.08)']
+        } : {}}
+        transition={{ duration: 2, repeat: speaking ? Infinity : 0, ease: 'easeInOut' }}
       >
-        {getCharacterEmoji()}
+        {getInitial()}
       </motion.div>
-      <span className={`font-bold text-sm tracking-wide uppercase ${
-        character === 'narrator' ? 'italic text-gray-400' : 'text-white'
+      <span className={`font-medium text-sm tracking-wide ${
+        character === 'narrator' ? 'italic text-[#6a6a6a]' : 'text-[#9a9895]'
       }`}>
         {getName()}
       </span>

@@ -13,29 +13,34 @@ interface DialogueBubbleProps {
 export default function DialogueBubble({ speaker, text, speakerName, index }: DialogueBubbleProps) {
   const isNarrator = speaker === 'narrator';
   
-  const getBubbleColor = () => {
+  // Subtle, sophisticated styling
+  const getBubbleStyle = () => {
     switch (speaker) {
       case 'josiah':
-        return 'bg-blue-900/50 border-blue-500/30';
+        return 'bg-[#0f1218]/60 border-[#1f2738]/60';
       case 'graham':
-        return 'bg-orange-900/50 border-orange-500/30';
+        return 'bg-[#180f14]/60 border-[#2a1a22]/60';
       case 'both':
-        return 'bg-purple-900/50 border-purple-500/30';
+        return 'bg-[#140f18]/60 border-[#241a2e]/60';
       case 'narrator':
-        return 'bg-gray-800/50 border-gray-500/30';
+        return 'bg-transparent border-transparent';
       case 'other':
-        return 'bg-green-900/50 border-green-500/30';
+        return 'bg-[#0f1614]/60 border-[#1a2822]/60';
       default:
-        return 'bg-gray-800/50 border-gray-500/30';
+        return 'bg-[#141414]/60 border-[#1f1f1f]/60';
     }
   };
 
   return (
     <motion.div
-      className="mb-4"
-      initial={{ opacity: 0, y: 20 }}
+      className="mb-5"
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.15 }}
+      transition={{ 
+        duration: 0.5, 
+        delay: index * 0.12,
+        ease: [0.25, 0.1, 0.25, 1]
+      }}
     >
       {!isNarrator && (
         <CharacterPortrait 
@@ -45,12 +50,19 @@ export default function DialogueBubble({ speaker, text, speakerName, index }: Di
         />
       )}
       <motion.div
-        className={`mt-2 ${!isNarrator ? 'ml-14' : ''} p-4 rounded-xl ${getBubbleColor()} border backdrop-blur-sm`}
-        initial={{ scale: 0.95 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.2, delay: index * 0.15 + 0.1 }}
+        className={`${!isNarrator ? 'mt-3 ml-13' : ''} 
+          ${!isNarrator ? `p-5 rounded-2xl ${getBubbleStyle()} border backdrop-blur-sm` : 'py-2'}
+          ${!isNarrator ? 'ml-[52px]' : ''}
+        `}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: index * 0.12 + 0.1 }}
       >
-        <p className={`${isNarrator ? 'italic text-gray-300' : 'text-white'} leading-relaxed`}>
+        <p className={`leading-relaxed ${
+          isNarrator 
+            ? 'italic text-[#7a7875] text-[0.95rem]' 
+            : 'text-[#d4d2cf] text-[1.0625rem]'
+        }`}>
           {text}
         </p>
       </motion.div>
