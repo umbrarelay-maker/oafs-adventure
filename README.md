@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍕 The Oafs' Adventure
 
-## Getting Started
+**A hilariously chaotic choose-your-own-adventure game about two lovable oafs trying to get pizza.**
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16.x-black?logo=next.js)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-06B6D4?logo=tailwindcss)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)
+
+## 🎮 Play Now
+
+**[▶️ Play The Oafs' Adventure](https://oafs-adventure.vercel.app)**
+
+## 📖 About
+
+Join **Josiah** and **Graham** on their epic quest for pizza. It should be simple — it's only three blocks away. But when these two lovable idiots are involved, nothing is ever simple.
+
+### Features
+
+- 🎭 **Interactive Storytelling** — Your choices shape the narrative
+- 🌳 **Multiple Story Branches** — 4+ unique paths to explore
+- 🏆 **4 Different Endings** — Heroic, successful, bizarre, or catastrophic
+- 📜 **Decision Tracker** — See your choices and their consequences
+- 🎨 **Dynamic Backgrounds** — Scenes change based on location and mood
+- ✨ **Smooth Animations** — Framer Motion-powered transitions
+- 🎉 **Confetti Celebrations** — Because victories deserve parties
+- 💾 **Auto-Save** — Your progress is saved automatically
+
+### Endings to Discover
+
+- 🦸‍♂️ **Heroic** — Accidentally become local legends
+- ✨ **Successful** — Get your pizza (more or less)
+- 🌀 **Bizarre** — End up somewhere unexpected
+- 💥 **Catastrophic** — Everything goes wonderfully wrong
+
+## 🛠 Tech Stack
+
+- **Framework:** Next.js 16 with App Router
+- **Styling:** Tailwind CSS 4
+- **Animations:** Framer Motion
+- **Effects:** Canvas Confetti
+- **Language:** TypeScript
+
+## 🎬 Story Highlights
+
+- Pepper spray pursuits with elderly neighbors
+- Ferret parade infiltration
+- Secret cat kingdoms in abandoned gardens
+- Kitchen disasters of epic proportions
+- Rooftop parkour for pizza
+- And so much more...
+
+## 🚀 Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📝 Story Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The game features a branching narrative with:
+- **40+ unique scenes**
+- **Multiple story paths** that can interweave
+- **Chaos meter** that tracks how wild your adventure gets
+- **Consequences** that carry forward
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🍕 The Characters
 
-## Learn More
+**Josiah** 🧔 — The more cautious one (relatively speaking). Often the voice of reason, which means he gets ignored a lot.
 
-To learn more about Next.js, take a look at the following resources:
+**Graham** 👨‍🦰 — Enthusiastic. Well-meaning. Possesses the kind of confidence that comes from never learning from past mistakes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Together** — They share a single braincell, and today it's on vacation.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+Made with 🍕 and questionable life choices.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*"We just wanted pizza."* — Josiah, probably
